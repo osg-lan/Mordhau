@@ -38,8 +38,6 @@ fi
 
 # Apply environment variable overrides to Engine.ini
 if [ -f "${STEAMAPPDIR}/cfg/Engine.ini" ]; then
-	# NetServerMaxTickRate appears in two sections (IpNetDriver and SteamSocketsNetDriver);
-	# only touch the IpNetDriver one, since the dedicated server uses raw IP networking.
 	sed -i \
 		"/\[\/Script\/OnlineSubsystemUtils.IpNetDriver\]/,/^\[/ s/^NetServerMaxTickRate=.*/NetServerMaxTickRate=${SERVER_TICKRATE}/" \
 		"${STEAMAPPDIR}/cfg/Engine.ini"
