@@ -11,27 +11,30 @@ ENV STEAMAPPDIR="${HOMEDIR}/${STEAMAPP}-dedicated"
 
 COPY "etc/entry.sh" "${HOMEDIR}/entry.sh"
 COPY "etc/cfg" "${STEAMAPPDIR}/cfg/"
+# Second, untouched copy of the templates - the bind-mounted volume at
+# STEAMAPPDIR shadows the copy above on every fresh/empty host directory,
+# so entry.sh seeds cfg/ from this location if it's ever found missing.
 COPY "etc/cfg" "/opt/mordhau-templates/"
 
 RUN set -x \
 	# Install, update & upgrade packages
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		libfontconfig1 \
-		libpangocairo-1.0-0 \
-		libnss3 \
-		libxi6 \
-		libxcursor1 \
-		libxss1 \
-		libxcomposite1 \
-		libasound2t64 \
-		libxdamage1 \
-		libxtst6 \
-		libatk1.0-0t64 \
-		libxrandr2 \
-		libcurl3t64-gnutls \
-		ca-certificates \
-		iputils-ping \
+		libfontconfig1=2.15.0-2.3 \
+		libpangocairo-1.0-0=1.56.3-1 \
+		libnss3=2:3.110-1+deb13u4 \
+		libxi6=2:1.8.2-1 \
+		libxcursor1=1:1.2.3-1 \
+		libxss1=1:1.2.3-1+b3 \
+		libxcomposite1=1:0.4.6-1 \
+		libasound2t64=1.2.14-1+deb13u1 \
+		libxdamage1=1:1.1.6-1+b2 \
+		libxtst6=2:1.2.5-1 \
+		libatk1.0-0t64=2.56.2-1+deb13u2 \
+		libxrandr2=2:1.5.4-1+b3 \
+		libcurl3t64-gnutls=8.14.1-2+deb13u5 \
+		ca-certificates=20250419 \
+		iputils-ping=3:20240905-3 \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	&& chmod +x "${HOMEDIR}/entry.sh" \
 	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" \
